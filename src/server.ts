@@ -4,6 +4,11 @@ import { isValidTokenId } from "web3-vite"
 
 export const app = express()
 .disable("x-powered-by")
+.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Methods", "GET")
+    next()
+})
 .get("/prices", (req, res) => {
     res.status(200).send(cache.prices)
 })
