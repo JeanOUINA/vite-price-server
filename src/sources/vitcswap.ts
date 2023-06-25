@@ -42,7 +42,13 @@ export default class VITCSwapSource implements Source {
     }
 
     async getPrices(tokens: string[]): Promise<Record<string, number>> {
-        const promises = tokens.map(token => this.getPrice(token))
+        const promises = tokens.map(token => {
+            return this.getPrice(token)
+                .catch(err => {
+                    console.error(`[${this.name}] Error while fetching price of ${token}:`, err)
+                    return 0
+                })
+        })
         const prices = await Promise.all(promises)
 
         return tokens.reduce((acc, token, i) => {

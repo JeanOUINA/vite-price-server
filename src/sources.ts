@@ -21,6 +21,7 @@ export async function getAllPrices():Promise<AllPrices[]>{
         promises.push(
             source.getTokens()
             .then(tokens => source.getPrices(tokens))
+            .catch(() => ({}))
         )
     }
     const prices = await Promise.all(promises)
