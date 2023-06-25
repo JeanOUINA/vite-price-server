@@ -19,6 +19,26 @@ export default new class PriceCache {
                 this.prices[token] = source.prices[token]
             }
         }
+
+        // aliases
+        const aliasSource:AllPrices = {
+            name: "aliases",
+            prices: {
+                // sack = knobsack
+                "tti_21ac6a75469bed1e7b7c5665": this.prices["tti_93939ea53d7726c1c0ee0196"]
+            }
+        }
+        for(const token in aliasSource.prices){
+            if(aliasSource.prices[token] === 0 && !this.prices[token]){
+                this.prices[token] = 0
+            }
+            if(aliasSource.prices[token] === 0)continue
+            this.tokens.add(token)
+            this.prices[token] = aliasSource.prices[token]
+        }
+        this.allPrices.unshift(aliasSource)
+
+
         console.log(`Updated prices for ${this.tokens.size} tokens`)
     }
 
